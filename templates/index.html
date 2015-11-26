@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Calculadora de Equilíbrios de Nash</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" media = "screen"/>
+
+  </head>
+
+  <body>
+    <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <h1 style="text-align:center">Calculadora de Equilíbrios de Nash</h1>
+      Bem vindo(a)! Essa é uma calculadora de equilíbrios de Nash em estratégias puras. O jogador 1 tem suas estratégias representadas genericamente por U e D, e o jogador 2, por sua vez, por L e R. Insira nos campos da tabela abaixo os payoffs de cada jogador para cada conjunto de estratégias. Depois, clique em "Enviar" para achar o(s) equlíbrio(s)! Clique em "OK" para jogar novamente.
+      <!-- please do not remove this line -->
+    </p>
+    <form name="myform" action="/" method="post"  enctype="multipart/form-data">
+      <h3 class="player2">Jogador 2</h3>
+      <h3 class="player1">Jogador 1</h3>
+    <table>
+      <tr>
+        <td>&nbsp</td>
+        <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspL</td>
+        <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspR</td>
+      </tr>
+      <tr>
+        <td>U</td>
+        {% if request.method == 'POST' %} <!--here we are using the jinja2 template. This line identifies wether the individual has submited any information or not.-->
+        <td><input name="player1-ul" type="number" value="{{ form['player1-UL'] }}"/><input name="player2-ul" type="number" value="{{ form['player2-UL'] }}"/></td>
+        <td><input name="player1-ur" type="number" value="{{ form['player1-UR'] }}"/><input name="player2-ur" type="number" value="{{ form['player2-UR'] }}"/></td>
+        {% else %}
+        <td><input name="player1-UL" type="number" step="any"/><input name="player2-UL" type="number" step="any"/></td>
+        <td><input name="player1-UR" type="number" step="any"/><input name="player2-UR" type="number" step="any"/></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td>D</td>
+        {% if request.method == 'POST' %}
+        <td><input name="player1-dl" type="number" value="{{ form['player1-DL'] }}"/><input name="player2-dl" type="number" value="{{ form['player2-DL'] }}"/></td>
+        <td><input name="player1-dr" type="number" value="{{ form['player1-DR'] }}"/><input name="player2-dr" type="number" value="{{ form['player2-DR'] }}"/></td>
+        {% else %}
+        <td><input name="player1-DL" type="number" step="any"/><input name="player2-DL" type="number" step="any"/></td>
+        <td><input name="player1-DR" type="number" step="any"/><input name="player2-DR" type="number" step="any"/></td>
+        {% endif %}
+      </tr>
+    </table>
+    {% if not request.method == 'POST' %}
+    <button type="submit">Enviar</button>
+    {% endif %}
+
+    {% if request.method == 'POST' %}
+    {% for equilibrio in data %}
+        <p>Equilíbrio em  {{ equilibrio }} </p>
+    {% else %}
+        <p>Não existe equilíbrio em estratégias puras. </p>
+    {% endfor %}
+    {% endif %}
+
+    {% if request.method == 'POST'%}
+    <a href="/"><button type="button">OK</button></a>
+    {% endif %}
+    </form>
+  </body>
+</html>
