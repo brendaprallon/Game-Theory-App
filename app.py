@@ -79,38 +79,38 @@ def evaluate_payoff(form):
 
 def case_player1_deny(player2_ul, player2_ur):
     if player2_ul > player2_ur:
-        return [{{player2_strategy1 }} + " e  + {{player1_strategy1 }}]
+        return [player2_strategy1 +  " e "  + player1_strategy1]
     elif player2_ul < player2_ur:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }}]
+        return [player2_strategy1 + " e " + player1_strategy2]
     else:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }},{{player2_strategy1 }} ' e ' {{player1_strategy2 }}]
+        return [player2_strategy1  + " e " + player1_strategy1, player2_strategy1 + " e " + player1_strategy2]
 
 
 def case_player2_deny(player1_ul, player1_dl):
     if player1_ul > player1_dl:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }}]
+        return [player2_strategy1 + " e " + player1_strategy1]
     elif player1_ul < player1_dl:
-        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }}]
+        return [player2_strategy2 + " e " + player1_strategy1]
     else:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }},{{player2_strategy2 }} ' e ' {{player1_strategy1 }}]
+        return [player2_strategy1 + " e " + player1_strategy1,player2_strategy2 + " e " + player1_strategy1]
 
 
 def case_player1_dilate(player2_dl, player2_dr):
     if player2_dl > player2_dr:
-        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }}]
+        return [player2_strategy2 + " e " + player1_strategy1]
     elif player2_dl < player2_dr:
-        return [{{player2_strategy2 }} + "e" + {{player1_strategy2 }}]
+        return [player2_strategy2 + " e " + player1_strategy2]
     else:
-        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }},{{player2_strategy2 }} ' e ' {{player1_strategy2 }}]
+        return [player2_strategy2  + " e " + player1_strategy1,player2_strategy2 + " e " + player1_strategy2]
 
 
 def case_player2_dilate(player1_ur, player1_dr):
     if player1_ur > player1_dr:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }}]
+        return [player2_strategy1 + " e " + player1_strategy2]
     elif player1_ur < player1_dr:
-        return [{{player2_strategy2 }} + "e" + {{player1_strategy2 }}]
+        return [player2_strategy2 + " e " + player1_strategy2]
     else:
-        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }},{{player2_strategy2 }} ' e ' {{player1_strategy2 }}]
+        return [player2_strategy1 + " e " + player1_strategy2,player2_strategy2 + " e " + player1_strategy2]
 
 
 # app.debug = True
