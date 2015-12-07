@@ -9,15 +9,33 @@ app = Flask(__name__)
 
 # from the flask documentation, because typically the route only answers to GET but we can change that providing the methods argument
 
-
 @app.route('/', methods=['GET', 'POST'])
+def firstpage():
+    if request.method == 'POST':
+        data, form = register_players(request.form)
+        # receives data submited
+    else:
+        data, form = [], None  # does not save any data
+    return render_template('index.html', data=data, form=form)
+
+def register_players(form):
+    player2_name = form['name_player2']
+    player1_name = form['name_player1']
+    player2_strategy1 = form['strategy1_player2']
+    player2_strategy2 = form['strategy2_player2']
+    player1_strategy1 = form['strategy1_player1']
+    player1_strategy2 = form['strategy2_player1']
+
+@app.route('/game', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         data, form = evaluate_payoff(request.form)
         # receives data submited
     else:
         data, form = [], None  # does not save any data
-    return render_template('index.html', data=data, form=form)
+    return render_template('game.html', data=data, form=form)
+
+
 
 
 def evaluate_payoff(form):
@@ -29,7 +47,7 @@ def evaluate_payoff(form):
     player2_ul = float(form['player2-UL'])
     player2_ur = float(form['player2-UR'])
     player2_dl = float(form['player2-DL'])
-    player2_dr = float(form['player2-DR'])
+    player2_dr = float(form['player2-DR'] )
 
     p1_choice_1 = case_player2_deny(player1_ul, player1_dl)
     p1_choice_2 = case_player2_dilate(player1_ur, player1_dr)
@@ -61,38 +79,38 @@ def evaluate_payoff(form):
 
 def case_player1_deny(player2_ul, player2_ur):
     if player2_ul > player2_ur:
-        return ['UL']
+        return [{{player2_strategy1 }} + " e  + {{player1_strategy1 }}]
     elif player2_ul < player2_ur:
-        return ['UR']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }}]
     else:
-        return ['UR', 'UL']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }},{{player2_strategy1 }} ' e ' {{player1_strategy2 }}]
 
 
 def case_player2_deny(player1_ul, player1_dl):
     if player1_ul > player1_dl:
-        return ['UL']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }}]
     elif player1_ul < player1_dl:
-        return ['DL']
+        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }}]
     else:
-        return ['DL', 'UL']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy1 }},{{player2_strategy2 }} ' e ' {{player1_strategy1 }}]
 
 
 def case_player1_dilate(player2_dl, player2_dr):
     if player2_dl > player2_dr:
-        return ['DL']
+        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }}]
     elif player2_dl < player2_dr:
-        return ['DR']
+        return [{{player2_strategy2 }} + "e" + {{player1_strategy2 }}]
     else:
-        return ['DL', 'DR']
+        return [{{player2_strategy2 }} + "e" + {{player1_strategy1 }},{{player2_strategy2 }} ' e ' {{player1_strategy2 }}]
 
 
 def case_player2_dilate(player1_ur, player1_dr):
     if player1_ur > player1_dr:
-        return ['UR']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }}]
     elif player1_ur < player1_dr:
-        return ['DR']
+        return [{{player2_strategy2 }} + "e" + {{player1_strategy2 }}]
     else:
-        return ['UR', 'DR']
+        return [{{player2_strategy1 }} + "e" + {{player1_strategy2 }},{{player2_strategy2 }} ' e ' {{player1_strategy2 }}]
 
 
 # app.debug = True
