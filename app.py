@@ -10,13 +10,16 @@ app = Flask(__name__)
 # from the flask documentation, because typically the route only answers to GET but we can change that providing the methods argument
 
 @app.route('/', methods=['GET', 'POST'])
-def firstpage():
+def index():
     if request.method == 'POST':
         data, form = register_players(request.form)
+
         # receives data submited
     else:
+
         data, form = [], None  # does not save any data
-    return render_template('index.html', data=data, form=form)
+    return render_template('index.html',dat=data,form=form)
+
 
 def register_players(form):
     player2_name = form['name_player2']
@@ -27,7 +30,7 @@ def register_players(form):
     player1_strategy2 = form['strategy2_player1']
 
 @app.route('/game', methods=['GET', 'POST'])
-def index():
+def game():
     if request.method == 'POST':
         data, form = evaluate_payoff(request.form)
         # receives data submited
@@ -47,7 +50,7 @@ def evaluate_payoff(form):
     player2_ul = float(form['player2-UL'])
     player2_ur = float(form['player2-UR'])
     player2_dl = float(form['player2-DL'])
-    player2_dr = float(form['player2-DR'] )
+    player2_dr = float(form['player2-DR'])
 
     p1_choice_1 = case_player2_deny(player1_ul, player1_dl)
     p1_choice_2 = case_player2_dilate(player1_ur, player1_dr)
@@ -111,8 +114,7 @@ def case_player2_dilate(player1_ur, player1_dr):
         return [player2_strategy2 + " e " + player1_strategy2]
     else:
         return [player2_strategy1 + " e " + player1_strategy2,player2_strategy2 + " e " + player1_strategy2]
-
-
+        
 # app.debug = True
 PORT = int(os.getenv('PORT', 8000))
 
