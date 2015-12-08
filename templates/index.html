@@ -17,7 +17,7 @@
       Bem vindo(a)! Essa é uma calculadora de equilíbrios de Nash em estratégias puras. O jogador 1 tem suas estratégias representadas genericamente por U e D, e o jogador 2, por sua vez, por L e R. Insira nos campos da tabela abaixo os payoffs de cada jogador para cada conjunto de estratégias. Depois, clique em "Enviar" para achar o(s) equlíbrio(s)! Clique em "OK" para jogar novamente.
       <!-- please do not remove this line -->
     </p>
-    <form name="myform1" action="/" method="POST"  enctype="multipart/form-data">
+    <form name="myform1" action="/game" method="POST"  enctype="multipart/form-data">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nome do Jogador 1: <input name = "name_player1" type = "text"/>
       <br>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nome do Jogador 2: <input name = "name_player2" type = "text"/>
@@ -30,6 +30,8 @@
       <br>
       Estratégia 2 do Jogador 2: <input name = "strategy2_player2" type = "text"/>
       <br><br>
-      <a href="/game"><button type="button">OK</button></a>
+      <button type="submit">OK</button>
 
       </form>
+    </body>
+</html>

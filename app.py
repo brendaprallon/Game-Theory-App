@@ -14,37 +14,56 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/game', methods=['GET','POST'])
+@app.route('/game', methods=['POST'])
 def game():
+
     form = request.form
-    if request.method == 'POST':
-        player2_name = form['name_player2']
-        player1_name = form['name_player1']
-        player2_strategy1 = form['strategy1_player2']
-        player2_strategy2 = form['strategy2_player2']
-        player1_strategy1 = form['strategy1_player1']
-        player1_strategy2 = form['strategy2_player1']
-        return render_template('game.html',form = form, player1_name = player1_name, player2_name = player2_name, player1_strategy1 = player1_strategy1, player1_strategy2 = player1_strategy2, player2_strategy1 = player2_strategy1, player2_strategy2 = player2_strategy2, is_result=False )
 
-@app.route('/results', methods=['GET', 'POST'])
+    player2_name = form['name_player2']
+    player1_name = form['name_player1']
+    player2_strategy1 = form['strategy1_player2']
+    player2_strategy2 = form['strategy2_player2']
+    player1_strategy1 = form['strategy1_player1']
+    player1_strategy2 = form['strategy2_player1']
+
+    return render_template(
+        'game.html',
+        form=form,
+        player1_name=player1_name,
+        player2_name=player2_name,
+        player1_strategy1=player1_strategy1,
+        player1_strategy2=player1_strategy2,
+        player2_strategy1=player2_strategy1,
+        player2_strategy2=player2_strategy2,
+        is_result=False
+    )
+
+
+@app.route('/results', methods=['POST'])
 def results():
-    if request.method == 'POST':
-        #deveríamos ter usado sessions para não precisar repetir as informações, porém não conseguimos aprender a tempo.
-        form = request.form
-        player2_name = form['name_player2']
-        player1_name = form['name_player1']
-        player2_strategy1 = form['strategy1_player2']
-        player2_strategy2 = form['strategy2_player2']
-        player1_strategy1 = form['strategy1_player1']
-        player1_strategy2 = form['strategy2_player1']
+    #deveríamos ter usado sessions para não precisar repetir as informações, porém não conseguimos aprender a tempo.
 
-        data, form = evaluate_payoff(form)
-        control_variable2 = 2
-        # receives data submited
-    else:
-        data, form = [], {}  # does not save any data
+    form = request.form
+    player2_name = form['name_player2']
+    player1_name = form['name_player1']
+    player1_strategy1 = form['player1_strategy1']
+    player1_strategy2 = form['player1_strategy2']
+    player2_strategy1 = form['player2_strategy1']
+    player2_strategy2 = form['player2_strategy2']
 
-    return render_template('results.html', data=data, form=form, is_result=True)
+    data, form = evaluate_payoff(form)
+
+    return render_template('game.html',
+                           data=data,
+                           form=form,
+                           player1_name=player1_name,
+                           player2_name=player2_name,
+                           player1_strategy1=player1_strategy1,
+                           player1_strategy2=player1_strategy2,
+                           player2_strategy1=player2_strategy1,
+                           player2_strategy2=player2_strategy2,
+                           is_result=True)
+
 
 def evaluate_payoff(form):
     player1_ul = float(form['player1-UL'])
@@ -56,6 +75,11 @@ def evaluate_payoff(form):
     player2_ur = float(form['player2-UR'])
     player2_dl = float(form['player2-DL'])
     player2_dr = float(form['player2-DR'])
+
+    player2_strategy1 = form['strategy1_player2']
+    player2_strategy2 = form['strategy2_player2']
+    player1_strategy1 = form['strategy1_player1']
+    player1_strategy2 = form['strategy2_player1']
 
     p1_choice_1 = case_player2_deny(player1_ul, player1_dl)
     p1_choice_2 = case_player2_dilate(player1_ur, player1_dr)

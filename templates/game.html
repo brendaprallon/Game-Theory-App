@@ -24,6 +24,10 @@
       <!-- aqui aparece escondido pra ser enviado no form -->
       <input name="name_player1" type="hidden" value="{{ player1_name }}">
       <input name="name_player2" type="hidden" value="{{ player2_name }}">
+      <input type="hidden" name="player1_strategy1" value="{{ player1_strategy1 }}"/>
+      <input type="hidden" name="player1_strategy2" value="{{ player1_strategy2 }}"/>
+      <input type="hidden" name="player2_strategy1" value="{{ player2_strategy1 }}"/>
+      <input type="hidden" name="player2_strategy2" value="{{ player2_strategy2 }}"/>
     <table>
       <tr>
         <td>&nbsp</td>
@@ -47,9 +51,9 @@
         <td>{{player1_strategy2}}</td>
         <input name="strategy2_player1" type="hidden" value="{{ player1_strategy2 }}">
         {% if is_result %}
-        <td><input name="player1-dl" type="number" value="{{ form['player1-DL'] }}"/><input name="player2-dl" type="number" value="{{ form['player2-DL'] }}"/></td>
-        <td><input name="player1-dr" type="number" value="{{ form['player1-DR'] }}"/><input name="player2-dr" type="number" value="{{ form['player2-DR'] }}"/></td>
-        {% if is_result %}
+        <td><input name="player1-DL" type="number" value="{{ form['player1-DL'] }}"/><input name="player2-dl" type="number" value="{{ form['player2-DL'] }}"/></td>
+        <td><input name="player1-DR" type="number" value="{{ form['player1-DR'] }}"/><input name="player2-dr" type="number" value="{{ form['player2-DR'] }}"/></td>
+        {%  else %}
         <td><input name="player1-DL" type="number" step="any"/><input name="player2-DL" type="number" step="any"/></td>
         <td><input name="player1-DR" type="number" step="any"/><input name="player2-DR" type="number" step="any"/></td>
         {% endif %}
@@ -62,11 +66,11 @@
     {% endif %}
 
     {% if is_result %}
-    {% for equilibrio in data %}
-        <p>Equilíbrio em  {{ equilibrios }} </p>
-    {% else %}
-        <p>Não existe equilíbrio em estratégias puras. </p>
-    {% endfor %}
+        {% for equilibrio in data %}
+            <p>Equilíbrio em  {{ equilibrio }} </p>
+        {% else %}
+            <p>Não existe equilíbrio em estratégias puras. </p>
+        {% endfor %}
     {% endif %}
 
     {% if is_result %}
