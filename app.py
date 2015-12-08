@@ -9,37 +9,42 @@ app = Flask(__name__)
 
 # from the flask documentation, because typically the route only answers to GET but we can change that providing the methods argument
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        data, form = register_players(request.form)
+    return render_template('index.html')
 
-        # receives data submited
-    else:
-
-        data, form = [], None  # does not save any data
-    return render_template('index.html',dat=data,form=form)
-
-
-def register_players(form):
-    player2_name = form['name_player2']
-    player1_name = form['name_player1']
-    player2_strategy1 = form['strategy1_player2']
-    player2_strategy2 = form['strategy2_player2']
-    player1_strategy1 = form['strategy1_player1']
-    player1_strategy2 = form['strategy2_player1']
-
-@app.route('/game', methods=['GET', 'POST'])
+@app.route('/game', methods=['GET','POST'])
 def game():
+    form = request.form
     if request.method == 'POST':
-        data, form = evaluate_payoff(request.form)
+        player2_name = form['name_player2']
+        player1_name = form['name_player1']
+        player2_strategy1 = form['strategy1_player2']
+        player2_strategy2 = form['strategy2_player2']
+        player1_strategy1 = form['strategy1_player1']
+        player1_strategy2 = form['strategy2_player1']
+        return render_template('game.html',form = form, player1_name = player1_name, player2_name = player2_name, player1_strategy1 = player1_strategy1, player1_strategy2 = player1_strategy2, player2_strategy1 = player2_strategy1, player2_strategy2 = player2_strategy2, is_result=False )
+
+@app.route('/results', methods=['GET', 'POST'])
+def results():
+    if request.method == 'POST':
+        #deveríamos ter usado sessions para não precisar repetir as informações, porém não conseguimos aprender a tempo.
+        form = request.form
+        player2_name = form['name_player2']
+        player1_name = form['name_player1']
+        player2_strategy1 = form['strategy1_player2']
+        player2_strategy2 = form['strategy2_player2']
+        player1_strategy1 = form['strategy1_player1']
+        player1_strategy2 = form['strategy2_player1']
+
+        data, form = evaluate_payoff(form)
+        control_variable2 = 2
         # receives data submited
     else:
-        data, form = [], None  # does not save any data
-    return render_template('game.html', data=data, form=form)
+        data, form = [], {}  # does not save any data
 
-
-
+    return render_template('results.html', data=data, form=form, is_result=True)
 
 def evaluate_payoff(form):
     player1_ul = float(form['player1-UL'])
@@ -66,55 +71,54 @@ def evaluate_payoff(form):
 
     equilibrios = []
     if choice_list.count('UL') >= 2:
-        equilibrios.append('UL')
+        equilibrios.append(player1_strategy1 + ',' + player2_strategy1)
 
     if choice_list.count('UR') >= 2:
-        equilibrios.append('UR')
+        equilibrios.append(player1_strategy1 + ',' + player2_strategy2)
 
     if choice_list.count('DL') >= 2:
-        equilibrios.append('DL')
+        equilibrios.append(player1_strategy2 + ',' + player2_strategy1)
 
     if choice_list.count('DR') >= 2:
-        equilibrios.append('DR')
+        equilibrios.append(player1_strategy2 + ',' + player2_strategy2)
 
     return equilibrios, form
 
 
 def case_player1_deny(player2_ul, player2_ur):
     if player2_ul > player2_ur:
-        return [player2_strategy1 +  " e "  + player1_strategy1]
+        return ['UL']
     elif player2_ul < player2_ur:
-        return [player2_strategy1 + " e " + player1_strategy2]
+        return ['UR']
     else:
-        return [player2_strategy1  + " e " + player1_strategy1, player2_strategy1 + " e " + player1_strategy2]
+        return ['UR', 'UL']
 
 
 def case_player2_deny(player1_ul, player1_dl):
     if player1_ul > player1_dl:
-        return [player2_strategy1 + " e " + player1_strategy1]
+        return ['UL']
     elif player1_ul < player1_dl:
-        return [player2_strategy2 + " e " + player1_strategy1]
+        return ['DL']
     else:
-        return [player2_strategy1 + " e " + player1_strategy1,player2_strategy2 + " e " + player1_strategy1]
+        return ['DL', 'UL']
 
 
 def case_player1_dilate(player2_dl, player2_dr):
     if player2_dl > player2_dr:
-        return [player2_strategy2 + " e " + player1_strategy1]
+        return ['DL']
     elif player2_dl < player2_dr:
-        return [player2_strategy2 + " e " + player1_strategy2]
+        return ['DR']
     else:
-        return [player2_strategy2  + " e " + player1_strategy1,player2_strategy2 + " e " + player1_strategy2]
+        return ['DL', 'DR']
 
 
 def case_player2_dilate(player1_ur, player1_dr):
     if player1_ur > player1_dr:
-        return [player2_strategy1 + " e " + player1_strategy2]
+        return ['UR']
     elif player1_ur < player1_dr:
-        return [player2_strategy2 + " e " + player1_strategy2]
+        return ['DR']
     else:
-        return [player2_strategy1 + " e " + player1_strategy2,player2_strategy2 + " e " + player1_strategy2]
-        
+        return ['UR', 'DR']
 # app.debug = True
 PORT = int(os.getenv('PORT', 8000))
 
