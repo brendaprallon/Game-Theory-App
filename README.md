@@ -1,13 +1,6 @@
-# Python Starter Overview
+# Game Theory App using IBM Bluemix
+Project developed for my intro to computer science class in 2015.
 
-The Python Starter demonstrates a simple, reusable Python web application.
+Made with python.
 
-## Run the app locally
-
-1. [Install Python][]
-2. Download and extract the starter code from the Bluemix UI
-3. cd into the app directory
-4. Run `python server.py`
-5. Access the running app in a browser at http://localhost:8000
-
-[Install Python]: https://www.python.org/downloads/
+It is a website made with the IBM Bluemix tool in which you input the payoffs for a simple game and it returns the outcome of the game.
